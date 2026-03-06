@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PropEdge AI · Sign In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Outfit:wght@800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06090e;--s1:#0b0f18;--s2:#0f1520;--s3:#131c28;
+  --b1:#1a2535;--b2:#223045;--accent:#00d8ff;--accent2:#0090ff;
+  --green:#00e587;--red:#ff4060;--yellow:#ffd740;--purple:#9d8cff;--orange:#ff7a35;
+  --text:#e2ecff;--text2:#8aadcc;--muted:#4a6880;--vfaint:#0a1018;--glow:rgba(0,216,255,0.12);
+}
+html{scroll-behavior:smooth;overflow-x:hidden;max-width:100vw}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);font-family:'Space Grotesk',sans-serif;color:var(--text);min-height:100vh;overflow-x:hidden;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,216,255,0.022) 1px,transparent 1px),linear-gradient(90deg,rgba(0,216,255,0.022) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;top:-30%;left:-10%;width:55%;height:75%;background:radial-gradient(ellipse at center,rgba(0,144,255,0.05) 0%,transparent 70%);pointer-events:none;z-index:0}
+
+/* ── AUTH SCREEN ── */
+#authScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;position:relative;z-index:1}
+.auth-box{width:100%;max-width:430px;background:var(–s1);border:1px solid var(–b2);border-radius:20px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,0.8);animation:fadeUp 0.4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+.auth-top{background:var(–s2);padding:28px 28px 22px;text-align:center;position:relative;border-bottom:1px solid var(–b1)}
+.auth-top::before{content:’’;position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 0%,var(–accent) 50%,transparent 100%)}
+.auth-logo{font-family:‘Outfit’,sans-serif;font-size:50px;font-weight:900;letter-spacing:-3px;text-transform:uppercase;line-height:1;color:var(–text)}
+.auth-logo span{color:var(–accent);text-shadow:0 0 24px rgba(0,216,255,0.45)}
+.auth-tagline{font-family:‘Space Mono’,monospace;font-size:8px;color:var(–muted);letter-spacing:4px;margin-top:6px}
+.auth-divider{width:44px;height:1px;background:linear-gradient(90deg,transparent,var(–accent),transparent);margin:16px auto 0}
+
+.auth-body{padding:28px 32px 24px}
+.auth-tabs{display:flex;border:1px solid var(–b2);border-radius:10px;overflow:hidden;margin-bottom:22px}
+.auth-tab{flex:1;padding:10px;font-family:‘Space Grotesk’,sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer;border:none;background:transparent;color:var(–muted);transition:all 0.2s}
+.auth-tab.active{background:var(–accent);color:#000;font-weight:800}
+.auth-tab:not(.active):hover{color:var(–text2);background:var(–s2)}
+
+.auth-badge{display:inline-flex;align-items:center;gap:6px;font-family:‘Space Mono’,monospace;font-size:8px;letter-spacing:2px;color:var(–green);background:rgba(0,229,135,0.06);border:1px solid rgba(0,229,135,0.2);border-radius:20px;padding:4px 12px;margin-bottom:20px;text-align:center}
+.auth-badge::before{content:’’;width:5px;height:5px;border-radius:50%;background:var(–green);box-shadow:0 0 6px var(–green);flex-shrink:0}
+
+.auth-label{font-family:‘Space Mono’,monospace;font-size:8px;color:var(–muted);letter-spacing:3px;text-transform:uppercase;margin-bottom:7px;display:block}
+.auth-input{width:100%;background:var(–s2);border:1px solid var(–b2);border-radius:10px;padding:14px 16px;font-family:‘Space Grotesk’,sans-serif;font-size:16px;font-weight:500;color:var(–text);outline:none;transition:all 0.2s;caret-color:var(–accent);margin-bottom:14px;-webkit-appearance:none}
+.auth-input:focus{border-color:var(–accent);box-shadow:0 0 0 3px var(–glow)}
+.auth-input::placeholder{color:var(–muted)}
+
+.auth-btn{width:100%;background:linear-gradient(135deg,var(–accent2),var(–accent));border:none;border-radius:10px;padding:15px;font-family:‘Outfit’,sans-serif;font-size:15px;font-weight:900;color:#000;letter-spacing:0.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;margin-top:4px;position:relative;overflow:hidden}
+.auth-btn:hover{filter:brightness(1.1);transform:translateY(-1px);box-shadow:0 10px 28px rgba(0,216,255,0.3)}
+.auth-btn:active{transform:translateY(0)}
+.auth-btn:disabled{opacity:0.6;cursor:not-allowed;transform:none}
+
+.auth-error{background:rgba(255,64,96,0.07);border:1px solid rgba(255,64,96,0.25);border-radius:8px;padding:10px 14px;font-family:‘Space Grotesk’,sans-serif;font-size:12px;color:var(–red);margin-bottom:14px;display:none;line-height:1.5}
+.auth-error.show{display:block}
+.auth-success{background:rgba(0,229,135,0.06);border:1px solid rgba(0,229,135,0.2);border-radius:8px;padding:10px 14px;font-family:‘Space Grotesk’,sans-serif;font-size:12px;color:var(–green);margin-bottom:14px;display:none;line-height:1.5}
+.auth-success.show{display:block}
+
+.strength-wrap{margin-top:-8px;margin-bottom:14px}
+.strength-bar{height:3px;border-radius:2px;background:var(–b1);overflow:hidden}
+.strength-fill{height:100%;border-radius:2px;width:0%;transition:all 0.3s}
+.strength-label{font-family:‘Space Mono’,monospace;font-size:8px;margin-top:4px;letter-spacing:1px;transition:color 0.3s}
+
+.auth-link{font-family:‘Space Grotesk’,sans-serif;font-size:11px;color:var(–muted);text-align:center;margin-top:14px;line-height:1.6}
+.auth-link a{color:var(–accent);cursor:pointer;text-decoration:underline;text-decoration-color:rgba(0,216,255,0.3)}
+
+.auth-footer{border-top:1px solid var(–b1);padding:14px 32px;background:var(–s2);text-align:center}
+.auth-footer p{font-family:‘Space Mono’,monospace;font-size:8px;color:var(–muted);letter-spacing:1px;line-height:2}
+
+.spinner{width:16px;height:16px;border:2px solid rgba(0,0,0,0.25);border-top-color:#000;border-radius:50%;animation:spin 0.7s linear infinite;display:inline-block;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── USER HEADER ── */
+.user-header{display:flex;align-items:center;justify-content:space-between;padding:9px 20px;background:var(–s1);border-bottom:1px solid var(–b1);position:sticky;top:0;z-index:200}
+.uh-logo{font-family:‘Outfit’,sans-serif;font-size:18px;font-weight:900;letter-spacing:-1px;text-transform:uppercase;color:var(–text)}
+.uh-logo span{color:var(–accent)}
+.uh-right{display:flex;align-items:center;gap:8px}
+.uh-email{font-family:‘Space Mono’,monospace;font-size:8px;color:var(–muted);letter-spacing:1px}
+.uh-tier{font-family:‘Space Mono’,monospace;font-size:8px;color:var(–accent);background:rgba(0,216,255,0.07);border:1px solid rgba(0,216,255,0.18);border-radius:4px;padding:2px 8px;letter-spacing:1px}
+.uh-logout{font-family:‘Space Mono’,monospace;font-size:8px;color:var(–muted);background:none;border:1px solid var(–b2);border-radius:6px;padding:5px 12px;cursor:pointer;letter-spacing:1px;transition:all 0.15s;text-transform:uppercase}
+.uh-logout:hover{border-color:var(–red);color:var(–red)}
+
+/* ── APP WRAPPER ── */
+#appWrapper{display:none;min-height:100vh}
+
+/* ── MOBILE ── */
+@media(max-width:480px){
+#authScreen{padding:16px;align-items:flex-start;padding-top:32px}
+.auth-box{border-radius:16px}
+.auth-top{padding:28px 24px 22px}
+.auth-logo{font-size:40px;letter-spacing:-2px}
+.auth-body{padding:22px 20px 18px}
+.auth-footer{padding:12px 20px}
+.auth-tabs .auth-tab{font-size:11px;padding:9px}
+.uh-email{display:none}
+}
+@media(max-width:360px){
+.auth-logo{font-size:34px}
+.auth-body{padding:18px 16px 14px}
+}
+</style>
+
+</head>
+<body>
+
+<!-- ════════════ AUTH SCREEN ════════════ -->
+
+<div id="authScreen">
+  <div class="auth-box">
+    <div class="auth-top">
+      <div class="auth-logo">Prop<span>Edge</span> AI</div>
+      <div class="auth-tagline">MLB MATCHUP ENGINE · 2026</div>
+      <div class="auth-divider"></div>
+    </div>
+
+```
+<div class="auth-body">
+  <div style="text-align:center">
+    <div class="auth-badge">● LIVE · MLB STATS API + BASEBALL SAVANT</div>
+  </div>
+
+  <div class="auth-tabs">
+    <button class="auth-tab active" id="tabLogin" onclick="switchTab('login')">Sign In</button>
+    <button class="auth-tab" id="tabRegister" onclick="switchTab('register')">Create Account</button>
+  </div>
+
+  <div id="errorMsg" class="auth-error"></div>
+  <div id="successMsg" class="auth-success"></div>
+
+  <!-- LOGIN -->
+  <div id="loginForm">
+    <label class="auth-label">Email Address</label>
+    <input class="auth-input" type="email" id="loginEmail" placeholder="you@example.com"
+      autocomplete="email" onkeydown="if(event.key==='Enter')doLogin()"/>
+
+    <label class="auth-label">Password</label>
+    <input class="auth-input" type="password" id="loginPass" placeholder="••••••••"
+      autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"/>
+
+    <button class="auth-btn" id="loginBtn" onclick="doLogin()">Sign In →</button>
+    <p class="auth-link">No account? <a onclick="switchTab('register')">Create one free</a></p>
+  </div>
+
+  <!-- REGISTER -->
+  <div id="registerForm" style="display:none">
+    <label class="auth-label">Full Name</label>
+    <input class="auth-input" type="text" id="regName" placeholder="Your name" autocomplete="name"/>
+
+    <label class="auth-label">Email Address</label>
+    <input class="auth-input" type="email" id="regEmail" placeholder="you@example.com" autocomplete="email"/>
+
+    <label class="auth-label">Password</label>
+    <input class="auth-input" type="password" id="regPass" placeholder="Min. 8 characters"
+      autocomplete="new-password" oninput="checkStrength(this.value)"/>
+    <div class="strength-wrap">
+      <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+      <div class="strength-label" id="strengthLabel" style="color:var(--muted)"></div>
+    </div>
+
+    <label class="auth-label">Confirm Password</label>
+    <input class="auth-input" type="password" id="regPass2" placeholder="Re-enter password"
+      autocomplete="new-password" onkeydown="if(event.key==='Enter')doRegister()"/>
+
+    <button class="auth-btn" id="regBtn" onclick="doRegister()">Create Account →</button>
+    <p class="auth-link">Already have an account? <a onclick="switchTab('login')">Sign in</a></p>
+  </div>
+</div>
+
+<div class="auth-footer">
+  <p>PROPEDGE AI · MLB MATCHUP ENGINE · 2026<br>
+     DATA: MLB STATS API · BASEBALL SAVANT<br>
+     ⚠ RESEARCH TOOL ONLY · NOT BETTING ADVICE</p>
+</div>
+```
+
+  </div>
+</div>
+
+<!-- ════════════ APP WRAPPER ════════════ -->
+
+<div id="appWrapper">
+  <div class="user-header">
+    <div class="uh-logo">Prop<span>Edge</span> AI</div>
+    <div class="uh-right">
+      <span class="uh-email" id="headerEmail"></span>
+      <span class="uh-tier" id="headerTier">FREE</span>
+      <button class="uh-logout" onclick="logout()">Sign Out</button>
+    </div>
+  </div>
+  <iframe id="appFrame" src="" style="width:100%;border:none;min-height:calc(100vh - 49px);display:block" title="PropEdge AI"></iframe>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// PROPEDGE AI — AUTH LAYER v1.1
+// Users stored in localStorage (SHA-256 hashed passwords)
+// Session stored in sessionStorage (clears on browser close)
+// After login, loads propedge-v6.html in an iframe
+//
+// FOR PRODUCTION: swap localStorage for Supabase or Firebase Auth
+// ══════════════════════════════════════════════════════════════
+
+const APP_SRC  = 'propedge-v6.html';
+const APP_KEY  = 'pe_v6_users';
+const SESS_KEY = 'pe_v6_session';
+const SALT     = 'propedge_2026_salt';
+
+function switchTab(tab) {
+  const isLogin = tab === 'login';
+  document.getElementById('tabLogin').classList.toggle('active', isLogin);
+  document.getElementById('tabRegister').classList.toggle('active', !isLogin);
+  document.getElementById('loginForm').style.display    = isLogin ? 'block' : 'none';
+  document.getElementById('registerForm').style.display = isLogin ? 'none'  : 'block';
+  clearMessages();
+}
+
+function showError(msg)   { const e=document.getElementById('errorMsg');   e.textContent=msg; e.classList.add('show');    document.getElementById('successMsg').classList.remove('show'); }
+function showSuccess(msg) { const e=document.getElementById('successMsg'); e.textContent=msg; e.classList.add('show');    document.getElementById('errorMsg').classList.remove('show'); }
+function clearMessages()  { document.getElementById('errorMsg').classList.remove('show'); document.getElementById('successMsg').classList.remove('show'); }
+
+function checkStrength(v) {
+  const fill  = document.getElementById('strengthFill');
+  const label = document.getElementById('strengthLabel');
+  if (!v) { fill.style.width='0%'; label.textContent=''; return; }
+  let score = 0;
+  if (v.length >= 8)           score++;
+  if (v.length >= 12)          score++;
+  if (/[A-Z]/.test(v))         score++;
+  if (/[0-9]/.test(v))         score++;
+  if (/[^A-Za-z0-9]/.test(v)) score++;
+  const configs = [
+    {w:'20%',color:'var(--red)',   text:'WEAK'},
+    {w:'40%',color:'var(--red)',   text:'WEAK'},
+    {w:'60%',color:'var(--yellow)',text:'FAIR'},
+    {w:'80%',color:'var(--green)', text:'STRONG'},
+    {w:'100%',color:'var(--green)',text:'VERY STRONG'},
+  ];
+  const c = configs[Math.max(score-1,0)];
+  fill.style.width      = c.w;
+  fill.style.background = c.color;
+  label.textContent     = c.text;
+  label.style.color     = c.color;
+}
+
+async function hashPassword(pass) {
+  const data = new TextEncoder().encode(pass + SALT);
+  const buf  = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+function getUsers()       { try { return JSON.parse(localStorage.getItem(APP_KEY)||'[]'); } catch { return []; } }
+function saveUsers(u)     { try { localStorage.setItem(APP_KEY, JSON.stringify(u)); } catch {} }
+function getSession()     { try { return JSON.parse(sessionStorage.getItem(SESS_KEY)||'null'); } catch { return null; } }
+function saveSession(u)   { try { sessionStorage.setItem(SESS_KEY, JSON.stringify({email:u.email,name:u.name,tier:u.tier||'FREE',loginTime:Date.now()})); } catch {} }
+function clearSession()   { try { sessionStorage.removeItem(SESS_KEY); } catch {} }
+function validateEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+
+function setLoading(id, loading, text) {
+  const btn = document.getElementById(id);
+  btn.disabled  = loading;
+  btn.innerHTML = loading ? '<span class="spinner"></span>Please wait…' : text;
+}
+
+async function doLogin() {
+  clearMessages();
+  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+  const pass  = document.getElementById('loginPass').value;
+  if (!email || !pass)       { showError('Please fill in all fields.'); return; }
+  if (!validateEmail(email)) { showError('Please enter a valid email address.'); return; }
+  setLoading('loginBtn', true, 'Sign In →');
+  await new Promise(r=>setTimeout(r,500));
+  const hash = await hashPassword(pass);
+  const user = getUsers().find(u=>u.email===email && u.hash===hash);
+  setLoading('loginBtn', false, 'Sign In →');
+  if (!user) { showError('Incorrect email or password. Please try again.'); return; }
+  saveSession(user);
+  launchApp(user);
+}
+
+async function doRegister() {
+  clearMessages();
+  const name  = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim().toLowerCase();
+  const pass  = document.getElementById('regPass').value;
+  const pass2 = document.getElementById('regPass2').value;
+  if (!name||!email||!pass||!pass2) { showError('Please fill in all fields.'); return; }
+  if (!validateEmail(email))         { showError('Please enter a valid email address.'); return; }
+  if (pass.length < 8)               { showError('Password must be at least 8 characters.'); return; }
+  if (pass !== pass2)                { showError('Passwords do not match.'); return; }
+  setLoading('regBtn', true, 'Create Account →');
+  await new Promise(r=>setTimeout(r,600));
+  const users = getUsers();
+  if (users.find(u=>u.email===email)) {
+    setLoading('regBtn', false, 'Create Account →');
+    showError('An account with this email already exists. Sign in instead.');
+    return;
+  }
+  const hash = await hashPassword(pass);
+  const user = {email, name, hash, tier:'FREE', createdAt:Date.now()};
+  users.push(user);
+  saveUsers(users);
+  setLoading('regBtn', false, 'Create Account →');
+  showSuccess(`Account created! Welcome, ${name}. Signing you in…`);
+  await new Promise(r=>setTimeout(r,1000));
+  saveSession(user);
+  launchApp(user);
+}
+
+function launchApp(user) {
+  document.getElementById('authScreen').style.display = 'none';
+  document.getElementById('appWrapper').style.display = 'block';
+  document.getElementById('headerEmail').textContent  = user.email;
+  document.getElementById('headerTier').textContent   = (user.tier||'FREE') + ' TIER';
+  document.getElementById('appFrame').src = APP_SRC;
+}
+
+function logout() {
+  clearSession();
+  document.getElementById('appWrapper').style.display = 'none';
+  document.getElementById('appFrame').src = '';
+  document.getElementById('authScreen').style.display = 'flex';
+  document.getElementById('loginEmail').value = '';
+  document.getElementById('loginPass').value  = '';
+  clearMessages();
+  switchTab('login');
+}
+
+window.addEventListener('load', () => {
+  const session = getSession();
+  if (session && session.email) {
+    launchApp(session);
+  } else {
+    document.getElementById('loginEmail').focus();
+  }
+});
+</script>
+
+</body>
+</html>
